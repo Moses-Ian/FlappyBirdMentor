@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flappy Bird</title>
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+    }
+  </style>
+  <script src="./p5/p5.js"></script>
+  <!-- <script src="../addons/p5.sound.js"></script> -->
+  <script src="parameters.js"></script>
+  <script src="matrix.js"></script>
+  <script src="nn.js"></script>
+  <script src="Pipe.js"></script>
+  <script src="Bird.js"></script>
+  <script src="ga.js"></script>
+  <script src="sketch.js"></script>
+</head>
+
+<body>
+	<div id="sketch-container"></div>
+	<input type="checkbox" id="trainingCheckbox" name="trainingCheckbox" checked>
+		Train the bird
+	</input>
+	<div>
+		<p><strong>Controls</strong></p>
+		<p>Press SPACE to flap</p>
+		<p>Press T to start or stop training</p>
+		<p>Press R to reset the game (the bird will keep its memory)</p>
+		<p>Press P to pause and unpause the game</p>
+	</div>
+	<div>
+		<h2>Flappy Bird with Imitation Learning</h2>
+		<p>by Ian Moses</p>
+		<p>In this demonstration, you are the green bird, trying to teach the yellow AI bird how to play the game. Try your best to navigate the pipes, and the bird will learn from your direction!</p>
+		<p>I came up with this algorithm, then looked online to see if anyone else already came up with it. This certainly falls into the category of imitation learning, but it doesn't quite match anything that I was able to find. If you know what this is called, please <a href="mailto:IMoses2@hotmail.com">let me know.</a></p>
+		<p>Here's how it works. The yellow bird's AI is a neural network which takes 5 inputs: the bird's y position, the bird's y velocity, the left edge location of the closest pipe, the y location of the bottom of the top pipe, and the y location of the top of the bottom pipe. The output is a number between 1 and 0, where any number above 0.5 indicates that the bird will flap and otherwise do nothing. The "mentor" (you) plays the game. If the bird is much higher than the mentor (more than 60 pixels above you) then the correct action is to do nothing. So the error is zero minus whatever the network output. If the bird is much lower than the mentor (more than 60 pixels below you) then the correct action is to flap. So the error is one minus the network's output. If the bird is within 60 pixels of you, then the bird is doing the correct thing and the error is zero. The network takes the error and backpropogates it in real time to update the weights.</p>
+		<p>I could fiddle with this more so that the bird will continue to learn on its own after the mentor finishes training, but I think that would bury the magic of manually training an AI.</p>
+		<p>I'm really curious about what kinds of games and tasks this method could teach AI to do. Could you teach it to play Mario Kart? Could you teach it to open Zillow and download all of the listings? Could you have an AI assistant where you teach it some task and it repeats the task?</p>
+	</div>
+</body>
+
+</html>
