@@ -8,7 +8,7 @@ In this demonstration, you are the green bird, trying to teach the yellow AI bir
 
 You can view the deployed page here:
 
-https://moses-ian.github.io/flappybirdmentor
+https://moses-ian.github.io/FlappyBirdMentor
 
 ## Usage
 
