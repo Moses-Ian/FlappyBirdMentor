@@ -40,3 +40,23 @@ body {
 #done2 {
 	visibility: hidden;
 }
+
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+	body {
+		background-color: #121212;
+		color: #e0e0e0;
+	}
+
+	h2 {
+		color: #b0bec5;
+	}
+
+	p {
+		color: #b0bec5;
+	}
+	
+	a {
+		color: #08708C;
+	}
+}
