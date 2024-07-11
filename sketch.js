@@ -10,6 +10,8 @@ let isPaused;
 let outputs;
 let trainingCheckbox;
 let lastTimeItWasWrong;
+let progressBar;
+let bestTime;
 
 function preload() {
   birdImg = loadImage('assets/bird.png');
@@ -45,8 +47,10 @@ function setup() {
 	savedBirds = [];
 	
 	trainingCheckbox = select('#trainingCheckbox');
+	progressBar = select('#progressBar');
 	
 	lastTimeItWasWrong = performance.now();
+	bestTime = 0;
 }
 
 function draw() {
@@ -100,7 +104,7 @@ function error() {
 	else if (bird.y > mentor.y + 10 && bird.velocity > 0)
 		err = 1 - outputs[0];
 	// don't get too close to the bottom pipe
-	else if (bird.y + 20 > pipe.bottom)
+	else if (bird.y + tooCloseToPipe > pipe.bottom)
 		err = 1 - outputs[0];
 	// you're close enough -> do whatever you want
 	else 
@@ -109,10 +113,7 @@ function error() {
 	
 	bird.wrong = abs(err) > 0.2;
 	if (bird.wrong) {
-		let endTime = performance.now();
-		if (endTime - lastTimeItWasWrong > 1000)
-			console.log(`Correct for ${(endTime - lastTimeItWasWrong) / 1000} seconds`);
-		lastTimeItWasWrong = endTime;
+		checkIfDoneTraining();
 	}
 	
 	
@@ -122,14 +123,20 @@ function error() {
 function keyPressed() {
 	if (key == ' ')
 		mentor.flap();
-	else if (key == 'p' && isPaused)
+	else if (key == 'p' && isPaused) {
 		resume();
+		lastTimeItWasWrong = performance.now();
+	}
 	else if (key == 'p' && !isPaused)
 		pause();
 	else if (key == 'r')
 		restart();
-	else if (key == 't')
+	else if (key == 't') {
+		// if about to start training again, reset the timer
+		if (!trainingCheckbox.checked())
+			lastTimeItWasWrong = performance.now();
 		trainingCheckbox.checked(!trainingCheckbox.checked());
+	}
 		
 }
 
@@ -170,4 +177,21 @@ function restart() {
 	isPaused = false;
 	frameCount = 0;
 	loop();
+}
+
+function checkIfDoneTraining() {
+	let time = (performance.now() - lastTimeItWasWrong) / 1000;
+	if (time > bestTime) {
+		bestTime = time;
+		progressBar.style('width', `${bestTime / timeToComplete * 100}%`);
+		if (bestTime > timeToComplete) {
+			let trainingElement = select('#training');
+			trainingElement.style('visibility', 'hidden');
+			let done2Element = select('#done2');
+			done2Element.style('visibility', 'visible');
+			let done1Element = select('#done1');
+			done1Element.style('visibility', 'visible');
+		}
+	}
+	lastTimeItWasWrong = performance.now();
 }
