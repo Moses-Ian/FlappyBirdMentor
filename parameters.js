@@ -14,3 +14,8 @@ var pipeMinDistanceToEdge = 90;
 
 // background stuff
 var bgScrollSpeed = 1;
+
+// neural network stuff
+var learningRate = 0.2;
+var timeToComplete = 2.5;
+var tooCloseToPipe = 20;

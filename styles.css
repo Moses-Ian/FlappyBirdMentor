@@ -1,0 +1,42 @@
+body {
+	padding: 4px;
+	margin: 0;
+}
+
+#progress {
+	width: 100%;
+	background-color: grey;
+}
+
+#progressBar {
+	height: 30px;
+	background-color: green;
+}
+
+.table {
+	width: 100%;
+}
+
+#sketch-container {
+	width: 420px;
+}
+
+.flex-container {
+    display: flex;
+    width: 100%;
+		align-items: center;
+}
+
+.flex-item {
+    padding: 10px;
+}
+
+#instructions,
+#progress-container {
+	flex: 1;
+}
+
+#done1,
+#done2 {
+	visibility: hidden;
+}

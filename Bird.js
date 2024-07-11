@@ -12,7 +12,7 @@ class Bird {
 		if (brain)
 			this.brain = brain.copy();
 		else
-			this.brain = new NeuralNetwork(5, 5, 1);
+			this.brain = new NeuralNetwork(5, 5, 5, 1);
 		
 		this.isMentor = false;
 	}
@@ -69,6 +69,12 @@ class Bird {
 		else if (trainingCheckbox.checked())
 			tint(255, 127);
 
+		if (this.wrong) {
+			drawingContext.shadowOffsetX = 0;
+			drawingContext.shadowOffsetY = 0;
+			drawingContext.shadowBlur = 20; // Adjust the blur amount for the glow
+			drawingContext.shadowColor = 'rgba(255, 0, 0, 0.8)'; // Set the shadow color to red with some opacity
+		}
     image(birdImg, 0, 0, this.r * 2, this.r * 2);
     //ellipse(0, 0, hurtBoxRadius * 2);
     pop();
