@@ -9,6 +9,7 @@ let score;
 let isPaused;
 let outputs;
 let trainingCheckbox;
+let lastTimeItWasWrong;
 
 function preload() {
   birdImg = loadImage('assets/bird.png');
@@ -44,6 +45,8 @@ function setup() {
 	savedBirds = [];
 	
 	trainingCheckbox = select('#trainingCheckbox');
+	
+	lastTimeItWasWrong = performance.now();
 }
 
 function draw() {
@@ -65,7 +68,7 @@ function draw() {
 	outputs = bird.think(pipes);
 	
 	if (trainingCheckbox.checked()) {
-		error();
+		error(pipes);
 		mentor.update();
 		mentor.show();  
 	}
@@ -85,16 +88,33 @@ function draw() {
 
 function error() {
 	let err;
+	let pipe = bird._getClosestPipe(pipes);
 	
 	// you're above me -> you should do nothing
-	if (bird.y < mentor.y - 60)
+	if (bird.y < mentor.y - 10)
 		err = 0 - outputs[0];
 	// you're far below me -> you should jump
-	else if (bird.y > mentor.y + 60)
+	else if (bird.y > mentor.y + 30)
+		err = 1 - outputs[0];
+	// you're below me and getting farther away -> you should jump
+	else if (bird.y > mentor.y + 10 && bird.velocity > 0)
+		err = 1 - outputs[0];
+	// don't get too close to the bottom pipe
+	else if (bird.y + 20 > pipe.bottom)
 		err = 1 - outputs[0];
 	// you're close enough -> do whatever you want
-	else
+	else 
 		err = 0;
+
+	
+	bird.wrong = abs(err) > 0.2;
+	if (bird.wrong) {
+		let endTime = performance.now();
+		if (endTime - lastTimeItWasWrong > 1000)
+			console.log(`Correct for ${(endTime - lastTimeItWasWrong) / 1000} seconds`);
+		lastTimeItWasWrong = endTime;
+	}
+	
 	
 	bird.brain.backPropogation([err]);
 }
