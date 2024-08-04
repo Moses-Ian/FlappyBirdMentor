@@ -60,6 +60,9 @@ function setup() {
 }
 
 function draw() {
+	if (isMobile && doneTraining() && trainingCheckbox.checked())
+		trainingCheckbox.checked(false);
+	
 	parallax(backgroundImg);
   
 	if (frameCount % pipePeriod == 0)
@@ -216,4 +219,10 @@ function checkIfDoneTraining() {
 		}
 	}
 	lastTimeItWasWrong = performance.now();
+	return false;
+}
+
+function doneTraining() {
+	console.log(bestTime);
+	return bestTime > timeToComplete;
 }
