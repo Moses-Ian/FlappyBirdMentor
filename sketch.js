@@ -12,6 +12,7 @@ let trainingCheckbox;
 let lastTimeItWasWrong;
 let progressBar;
 let bestTime;
+let isMobile;
 
 function preload() {
   birdImg = loadImage('assets/bird.png');
@@ -21,7 +22,12 @@ function preload() {
 }
 
 function setup() {
-	let canvas = createCanvas(400, 600);
+	isMobile = detectMobile();
+	let canvas;
+	if (isMobile)
+		canvas = createCanvas(windowWidth, windowHeight);
+	else
+		canvas = createCanvas(400, 600);
 	canvas.parent('sketch-container');
 	
 	angleMode(DEGREES);
@@ -137,7 +143,23 @@ function keyPressed() {
 			lastTimeItWasWrong = performance.now();
 		trainingCheckbox.checked(!trainingCheckbox.checked());
 	}
-		
+}
+
+function touchStarted() {
+	// flap when the screen is tapped
+	mentor.flap();
+	
+	// prevent default touch behaviour
+	return false;
+}
+
+function windowResized() {
+	resizeCanvas(windowWidth, windowHeight);
+}
+
+// Function to detect if the device is mobile
+function detectMobile() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
 function parallax(img) {
