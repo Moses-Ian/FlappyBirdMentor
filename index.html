@@ -15,10 +15,23 @@
   <script src="Bird.js"></script>
   <script src="ga.js"></script>
   <script src="sketch.js"></script>
+	<script>
+		window.onload = function() {
+      if (detectMobile()) {
+				console.log("mobile");
+        document.getElementById('instructions').classList.add('hide');
+        document.getElementById('progress-container').classList.add('hide');
+				document.getElementById('sketch-container').classList.add('full-screen');
+				document.getElementById('flex-container').classList.add('no-padding');
+				document.getElementById('body').classList.add('no-padding');
+				document.getElementById('sketch-container').classList.add('no-padding');
+      }
+    };
+	</script>
 </head>
 
-<body>
-	<div class="flex-container">
+<body id='body'>
+	<div id='flex-container' class="flex-container">
 		<div id='instructions' class='flex-item'>
 			<p><strong>Controls</strong></p>
 			<p>Press SPACE to flap</p>
